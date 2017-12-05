@@ -144,11 +144,10 @@ module EmailInquire
     UNIQUE_TLD_DOMAINS = load_data("unique_domain_providers").freeze
 
     def validate_domains_with_unique_tld
-      base, tld = domain.split(".")
+      base, separator, tld = domain.partition(".")
 
       UNIQUE_TLD_DOMAINS.each do |reference|
-        reference_base, reference_tld = reference.split(".")
-
+        reference_base, reference_separator, reference_tld = reference.partition(".")
         if base == reference_base && tld != reference_tld
           response.hint!(domain: reference)
           break
